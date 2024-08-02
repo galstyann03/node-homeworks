@@ -16,13 +16,13 @@ async function listFiles() {
 
 async function copyDirectory(src, dest) {
     try {
-        const entries = await fs.readdir(src, {withFileTypes: true, recursive: true});
+        const entries = await fs.readdir(src, {withFileTypes: true});
         for (const entry of entries) {
             const srcPath = src + `/${entry.name}`;
             const destPath = dest + `/${entry.name}`;
 
             if (entry.isDirectory()) {
-                await fs.mkdir(destPath, { recursive: true });
+                await fs.mkdir(destPath);
                 await copyDirectory(srcPath, destPath);
             }
             else await fs.copyFile(srcPath, destPath);
