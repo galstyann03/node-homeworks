@@ -1,0 +1,3 @@
+name: Narek
+surname: Galstyan
+age: 21

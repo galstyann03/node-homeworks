@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Time Data Stream</title>
+</head>
+<body>
+
+    <!-- Input field for the user to type data -->
+    <input type="text" placeholder="Type something..."
+    id="js-input"/>
+
+    <!-- Button to send data to the server -->
+    <button id="js-send-button">Send</button>
+
+    <!-- Element to display the response from the server -->
+    <h3 id="js-output"></h3>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Event listener for the Send button click
+        document.getElementById('js-send-button').addEventListener('click', () => {
+            const inputValue = document.getElementById('js-input').value;
+
+            // Send the value to the server using the 'inputStream' event
+            socket.emit('inputStream', inputValue);
+        });
+
+        // Listen for the 'outputStream' event from the server
+        socket.on('outputStream', (data) => {
+            // Display the transformed data in the output element
+            document.getElementById('js-output').textContent = data;
+        })
+    </script>
+</body>
+</html>
