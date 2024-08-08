@@ -6,20 +6,20 @@ const outputFile = 'todosWithTimestamps.json';
 
 // Transform stream that adds a 'timestamp' to each todo item
 const addTimestampTr  = new Transform({
+    objectMode: true,
     transform(chunk, encoding, callback) {
-        // parsing the chunk of code and extracting 'todos' array
+        console.log(chunk);
         const todos = JSON.parse(chunk).todos;
 
         // adding 'timestamp' property to each todo item
         const transformedTodos = todos.map(todo => ({...todo, timestamp: new Date().toLocaleString()}));
 
         // converting the object back to a JSON string and pushing to readable stream
-        this.push(JSON.stringify({todos: transformedTodos}, null, 2));
-        callback();
+        callback(null, JSON.stringify({todos: transformedTodos}, null, 2));
     }
 });
 
-const readableStream = fs.createReadStream(inputFile);
+const readableStream = fs.createReadStream(inputFile, "utf-8");
 const writeableStream = fs.createWriteStream(outputFile);
 
 readableStream.pipe(addTimestampTr).pipe(writeableStream);
